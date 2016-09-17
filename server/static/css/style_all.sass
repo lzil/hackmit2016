@@ -67,11 +67,6 @@ $color-white: #FFF
 
 +placeholder-focus
     color: transparent
-
-=animation($time)
-    -webkit-animation: moveclouds $time linear infinite
-    -moz-animation: moveclouds $time linear infinite
-    -o-animation: moveclouds $time linear infinite
     
 =transform($amount)
     -webkit-transform: scale($amount)
@@ -79,14 +74,6 @@ $color-white: #FFF
     transform: scale($amount)
 
 /* START OF CSS */
-
-/*@media (max-width: 375px)
-    html
-        min-width: 100%
-    .textcontainer
-        min-width: 325px
-    .list
-        min-width: 325px*/
 
 html
     height: 100%
@@ -933,82 +920,6 @@ input
 @media (max-width: 800px)
     body
         height: 100%
-        
-/* CLOUDS!! */
-#clouds
-    padding: 100px 0
-    background: transparent
-    position: absolute
-    top: 0em
-    z-index: 0
-    height: 5em
-    .cloud
-        width: 7em
-        height: 3em
-        background: #fff
-        border-radius: 8em
-        position: relative
-        &:before,
-        &:after
-            content: ''
-            position: absolute 
-            background: $color-white
-            width: 4em
-            height: 3em
-            position: absolute
-            top: -1em
-            left: 0.8em
-            border-radius: 3em
 
-            -webkit-transform: rotate(30deg)
-            transform: rotate(30deg)
-            -moz-transform: rotate(30deg)
-        &:after
-            width: 3em
-            height: 4em
-            top: -1em
-            left: auto
-            right: 1em
-    .x1
-        +animation(60s)
-        opacity: 0.1
-    .x2
-        left: 10%
-        +transform(0.6)
-        opacity: 0.15
-        +animation(75s)
-    .x3
-        left: -20%
-        top: -40%
-        +transform(0.8)
-        opacity: 0.2
-        +animation(80s)
-    .x4
-        left: 50%
-        top: -30%
-        +transform(0.75)
-        opacity: 0.15
-        +animation(90s)
-    .x5
-        left: -10%
-        top: -100%
-        +transform(0.8)
-        opacity: 0.2
-        +animation(70s)
-    @-webkit-keyframes moveclouds
-        0%
-            margin-left: 1000px
-        100%
-            margin-left: -1000px
-    @-o-keyframes moveclouds
-        0%
-            margin-left: 1000px
-        100%
-            margin-left: -1000px
-    @-moz-keyframes moveclouds
-        0%
-            margin-left: 1000px
-        100%
-            margin-left: -1000px
 #hidden
     display: none

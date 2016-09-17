@@ -1,5 +1,5 @@
 """
-	catalist
+	textura
 	~~~~~~~~
 
 	This package implements our web app ^_^
