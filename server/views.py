@@ -10,103 +10,14 @@
 """
 
 from flask import render_template, request
-import flask.ext.security as flask_security
-# from flask.ext import mongoengine
 from datetime import datetime, date, timedelta
 
 from server import app, HOSTNAME
-# from database import Role, User, Catalist, CatalistEntry, \
-#                      CatalistKVP, user_datastore, security
-# from permissions import cmp_permission, query_cur_perm
 
-# from database import user_datastore
-from flask.ext.mongoengine import *
 
 # **********************************************************
 # User Interaction Section
 # **********************************************************
-
-
-# @app.route("/signup", methods=['POST'])
-# def signup():
-#     """
-#     Sign the user up, given valid credentials and a username the doesn't
-#     already exist in our database.
-#     """
-#     user_id = request.form['uid']
-#     pw = request.form['password']
-#     pw_hash = flask_security.utils.get_hmac(pw)
-#     email = request.form['email']
-#     time = datetime.utcnow()
-
-#     try:
-#         # if user exists, then can't sign up with same username
-#         user = User.objects.get(uid=unicode(user_id))
-#         return render_template('register.html',
-#                                message="Sorry, that username is taken!")
-#     except mongoengine.DoesNotExist:
-#         try:
-#             # if user exists, then can't sign up with same email
-#             user = User.objects.get(email=unicode(email))
-#             return render_template(
-#                 'register.html',
-#                 message="Sorry, that email is taken!")
-#         except:
-#             user_datastore.create_user(uid=user_id, password=pw_hash,
-#                                        last_active=time, email=email)
-#     # if multiple objects, then something just screwed up
-#     except:
-#         return render_template('error.html')  # DNE yet
-
-#     # we just made the user so they better exist
-#     user = User.objects.get(uid=unicode(user_id))
-#     flask_security.utils.login_user(user, remember=None)
-
-#     return render_template('home.html',
-#                            message="Welcome to Catalist, {}!".format(user_id),
-#                            newuser=1)
-
-
-# @app.route("/signin", methods=['POST'])
-# def signin():
-#     """ Sign the user in, given valid credentials. """
-#     user_id = request.form['uid']
-#     pw = request.form['password']
-#     pw_hash = flask_security.utils.get_hmac(pw)
-
-#     whoops = "You have entered a wrong username or password. Please try again."
-#     try:
-#         # if user exists, then sign in
-#         user = User.objects.get(uid=unicode(user_id))
-#         if flask_security.utils.verify_and_update_password(pw_hash, user):
-#             time = datetime.utcnow()
-#             user.last_active = time
-#             flask_security.utils.login_user(user, remember=None)
-#             message = ""
-#         else:
-#             message = whoops
-#     except:  # user DNE
-#         message = whoops
-#     return render_template('./security/login_user.html', success=message)
-
-
-# @app.route("/logout", methods=['POST'])
-# def logout():
-#     """ Log out the current user, clearing the Remember Me cookie """
-#     flask_security.utils.logout_user()
-#     return render_template('logoutsuccess.html')
-
-
-# @app.route("/login", methods=['GET'])
-# def login():
-#     """ Page for user login """
-#     return render_template('./security/login_user.html')
-
-
-# @app.route("/register")
-# def register():
-#     """ Page for user registration """
-#     return render_template('register.html')
 
 
 @app.route("/list/<listid>", methods=['GET'])
