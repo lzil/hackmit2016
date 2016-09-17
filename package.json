@@ -1,0 +1,23 @@
+{
+  "name": "textura",
+  "version": "1.0.0",
+  "description": "HackMIT 2016",
+  "main": "getImages.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lzil/hackmit2016.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/lzil/hackmit2016/issues"
+  },
+  "homepage": "https://github.com/lzil/hackmit2016#readme",
+  "dependencies": {
+    "fs": "0.0.1-security",
+    "request": "^2.74.0"
+  }
+}
