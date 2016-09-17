@@ -17,6 +17,7 @@ $color-bright-light: #AEF
 $color-bright-medium-light: #9fc
 $color-bright-medium: #6fc
 $color-bright-dark: #0fc
+$color-bright-darker: #0a9
 
 $color-gray-light: #CCC
 $color-gray-medium: #999
@@ -84,6 +85,8 @@ html
     overflow-y: scroll
     
     letter-spacing: 1px
+    color: $color-white
+    font-weight: lighter
     
 body
     font-family: $font-stack
@@ -112,7 +115,7 @@ body
     width: auto
     text-align: center
 
-input
+input[type=text]
     display: inline-block
     outline: none
     @extend .relative-center
@@ -138,6 +141,33 @@ input
         background-color: $color-gray-transparent-lightest
     &:focus
         background-color: $color-gray-transparent-lightest
+ 
+#upload-visible
+    @extend .relative-center
+    width: 5em
+    height: 1em
+    padding: 3px 3px 5px
+    
+    background-color: $color-transparent-light
+    +transition(background, .25s, ease-in-out)
+    
+    text-align: center
+    color: $color-white
+    
+    &:hover
+        background-color: $color-bright-darker
+    input
+        position: absolute
+        left: 0
+        top: 0
+        
+        border: none
+        height: 1em
+        width: 100%
+        padding: 3px 3px
+
+        opacity: 0
+        filter: alpha(opacity=0)
     
 .header
     margin: 2em auto 1em auto
@@ -166,10 +196,14 @@ input
     width: 350px
     height: 250px
     background-color: $color-transparent-light
-    
     border: dashed 2px $color-white
-    
     margin-top: 1em
+    
+    overflow: hidden
+    
+    #preview
+        opacity: 0
+        width: 100%
     
     .is-dragover
         background-color: $color-transparent-medium
