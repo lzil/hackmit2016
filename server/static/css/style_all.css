@@ -1,8 +1,8 @@
 /* SASS VARIABLES */
 /* SASS EXTENSIONS AND MIXINS */
-.absolute-center, .relative-center, input, #upload, .error-container { position: absolute; left: 0; right: 0; margin-left: auto; margin-right: auto; }
+.absolute-center, .relative-center, input, #box, .error-container { position: absolute; left: 0; right: 0; margin-left: auto; margin-right: auto; }
 
-.relative-center, input, #upload { position: relative; }
+.relative-center, input, #box { position: relative; }
 
 /* MAN THESE TOOK FOREVER TO GET RIGHT IN SASS LOL */
 ::-webkit-input-placeholder { color: #999; }
@@ -42,8 +42,9 @@ input:focus { background-color: rgba(100, 100, 100, 0.2); }
 
 #query { color: #FFF; font-weight: lighter; text-align: center; position: relative; display: block; margin-left: auto; margin-right: auto; }
 
-#upload { width: 350px; height: 250px; background-color: rgba(255, 255, 255, 0.2); border: dashed 2px #FFF; margin-top: 1em; }
+#box { width: 350px; height: 250px; background-color: rgba(255, 255, 255, 0.2); border: dashed 2px #FFF; margin-top: 1em; }
+#box .is-dragover { background-color: rgba(255, 255, 255, 0.5); }
 
-#hidden { display: none; }
+.hidden { display: none; }
 
 /*# sourceMappingURL=style_all.css.map */
