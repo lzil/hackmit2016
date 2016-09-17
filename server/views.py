@@ -19,24 +19,6 @@ from server import app, HOSTNAME
 # User Interaction Section
 # **********************************************************
 
-
-@app.route("/list/<listid>", methods=['GET'])
-def getlist(listid):
-    """ Display a list with given listid from our database. """
-    url = request.base_url
-    try:
-        the_list = Catalist.objects.get(listid=listid)
-    except DoesNotExist:
-        abort(404)
-    if cmp_permission(query_cur_perm(the_list), "view") < 0:
-        abort(403)
-    msg = ('Access or share this list at:<br>'
-           '<input type="url" id="listurl" value={0}>').format(url)
-
-    return render_template('loadlist.html', listtitle=the_list.title,
-                           entries=the_list.contents, message=msg)
-
-
 def human_readable_time_since(tiem):
     """
     Give a human-readable representation of time elapsed since a given time
@@ -72,20 +54,6 @@ def human_readable_time_since(tiem):
 
 app.jinja_env.globals.update(
     human_readable_time_since=human_readable_time_since)
-
-
-
-@app.route("/preview/<listid>", methods=['GET'])
-def preview_list(listid):
-    """
-    Fetch the list with given listid from our database,
-    display with template
-    """
-    the_list = Catalist.objects.get(listid=listid)
-    if cmp_permission(query_cur_perm(the_list), "view") < 0:
-        abort(403)
-    return render_template('preview.html', listtitle=the_list.title,
-                           entries=the_list.contents)
 
 
 @app.route("/about", methods=['GET', 'POST'])
