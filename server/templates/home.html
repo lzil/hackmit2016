@@ -1,0 +1,70 @@
+{% extends "layout.html" %}
+{% block title %}
+launch your lists to the clouds and beyond.
+{% endblock %}
+
+{% block content %}
+
+<!--<link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/list.css') }}">-->
+<script type="text/javascript" src="{{ url_for('static', filename='js/home.js') }}"></script>
+<p align='center'>
+        {% if newuser==1 %}
+        <input type='hidden' value='newuser' id='newuser'>
+        {% endif %}
+        <div id="welcome">
+            Welcome! Would you like a tutorial?
+            <br>
+            <div id="newb">Yes, please!</div>
+            <div id="pro">Nope, I'm a Pro.</div>
+        </div>
+    </p>
+    <p class="bubble">
+        Type in a title where it says "Title," and your list will save!
+    </p>
+
+    <p class="bubble-2">
+        This is your first list item! We'll continue after you fill it out. It automatically saves, and a new item appears.
+    </p>
+    <p class="bubble-3">
+        Now click the down button to add some item details.
+    </p>
+    <p class="bubble-4">
+        See where it says "Note?" Describe your item here! For example, you might want to add "Author: J.K. Rowling" for a book, or "Rating: 6.2/7" for a class.
+    </p>
+
+<div id="wrapper">
+    <form id="catalist" enctype='jsonForm' action="/ajax/savelist" method="POST">
+    <div class="list">
+        <div class="listTitle">
+            <input type="text" name="title" placeholder="Title">
+        </div>
+        
+        <div class="listItem">
+            <!--list item-->
+            <div class="icon-trash-2"></div>
+            <div class='votes'><div><b>0</b>&#9829;</div></div>
+            <div class="icon-heart"></div> 
+            <div class="itemTitle">
+                <input type="text" placeholder="Item">
+            </div>
+            <div class="icon-down"></div>      
+            <div class="attributes">
+                <!--all item attributes-->
+                <div class="attribute">
+                    <!--single item attribute-->
+                    <div class="key"
+                        ><input type="text" placeholder="Note"
+                    ></div
+                    ><div class="value"
+                        ><input type="text" placeholder="Value"
+                    ></div
+                    ><div class="icon-minus"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </form>
+    <!--<div id="footer"></div>-->
+</div>
+
+{% endblock %}
