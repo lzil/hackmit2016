@@ -1,5 +1,5 @@
 """
-	catalist
+	textura
 	~~~~~~~~
 
 	This package implements our web app ^_^
@@ -82,5 +82,5 @@ app = Flask(__name__)
 
 import views  # /about, /mylists, etc.
 import errorviews  # 404 pages, etc.
-# from api import api_blueprint
-# app.register_blueprint(api_blueprint, url_prefix='/api')
+from api import api_blueprint
+app.register_blueprint(api_blueprint, url_prefix='/api')
