@@ -42,7 +42,8 @@ input:focus { background-color: rgba(100, 100, 100, 0.2); }
 
 #query { color: #FFF; font-weight: lighter; text-align: center; position: relative; display: block; margin-left: auto; margin-right: auto; }
 
-#box { width: 350px; height: 250px; background-color: rgba(255, 255, 255, 0.2); border: dashed 2px #FFF; margin-top: 1em; }
+#box { width: 350px; height: 250px; background-color: rgba(255, 255, 255, 0.2); border: dashed 2px #FFF; margin-top: 1em; overflow: hidden; }
+#box #preview { opacity: 0; width: 100%; }
 #box .is-dragover { background-color: rgba(255, 255, 255, 0.5); }
 
 .hidden { display: none; }
