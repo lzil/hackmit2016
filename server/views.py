@@ -74,31 +74,6 @@ app.jinja_env.globals.update(
     human_readable_time_since=human_readable_time_since)
 
 
-# @app.route("/mylists", methods=['GET'])
-# @flask_security.login_required
-# def userlists():
-#     """ A page displaying all lists belonging to the user. """
-
-#     current_user = flask_security.core.current_user
-#     cur_user_nat_id = current_user.id  # the natively used id for the user,
-#     # since we're querying reference fields
-#     lists = Catalist.objects(
-#             db.Q(creator=current_user.uid) |
-#             db.Q(owners=current_user.id) |
-#             db.Q(editors=current_user.id) |
-#             db.Q(viewers=current_user.id) |
-#             db.Q(mylisters=current_user.id)
-#         ).only(
-#             'listid', 'title', 'last_visited').all()
-#     if lists.first() is None:
-#         return render_template(
-#             'home.html',
-#             message="Oops! You have no lists saved! " +
-#                     "Would you like to create one?")
-
-#     lists = lists.order_by('-last_visited').all()
-#     return render_template('mylists.html', lists=lists, host=HOSTNAME)
-
 
 @app.route("/preview/<listid>", methods=['GET'])
 def preview_list(listid):
@@ -111,16 +86,6 @@ def preview_list(listid):
         abort(403)
     return render_template('preview.html', listtitle=the_list.title,
                            entries=the_list.contents)
-
-
-# def get_id():
-#     """ Return name of current user """
-#     try:
-#         return flask_security.core.current_user.uid
-#     except AttributeError:
-#         return None
-
-# app.jinja_env.globals.update(get_id=get_id)
 
 
 @app.route("/about", methods=['GET', 'POST'])
