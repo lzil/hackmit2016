@@ -9,16 +9,16 @@
    xmlns="http://www.w3.org/2000/svg"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   width="280.75183mm"
+   width="280.7518mm"
    height="62.495281mm"
-   viewBox="0 0 994.79003 221.43997"
+   viewBox="0 0 994.78992 221.43997"
    id="svg2"
    version="1.1"
    inkscape:version="0.91 r13725"
    sodipodi:docname="logo.svg"
    inkscape:export-filename="/Users/Rachel/Documents/cs/hackmit16/server/static/img/logo.png"
-   inkscape:export-xdpi="110.81"
-   inkscape:export-ydpi="110.81">
+   inkscape:export-xdpi="41.25"
+   inkscape:export-ydpi="41.25">
   <defs
      id="defs4" />
   <sodipodi:namedview
@@ -30,7 +30,7 @@
      inkscape:pageshadow="2"
      inkscape:zoom="0.49497475"
      inkscape:cx="503.33988"
-     inkscape:cy="88.258381"
+     inkscape:cy="88.258376"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="true"
@@ -46,7 +46,7 @@
     <inkscape:grid
        type="xygrid"
        id="grid4136"
-       originx="-56.239912"
+       originx="-56.239913"
        originy="-313.62289" />
   </sodipodi:namedview>
   <metadata

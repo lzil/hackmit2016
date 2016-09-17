@@ -15,30 +15,16 @@
 
 <body>
     <!--placeholder cuz I'm bad at CSS lol-->
-    <div class="topPlaceholder"></div>
-
     <div class="header">
         <a href="/"><img src="/static/img/logo.png">
         </a>
         <!--title block is an optional bit, like a header to each page-->
-
+        
         <p>
             <h1>{% block title %}{% endblock %}</h1>
         </p>
 
     </div>
-
-    <!--<div class="login-container">
-        <div>
-            <a href="/about">about</a> &#183; <a href="/login">login</a> &#183; <a href="/register">register</a>
-        </div>
-
-    </div>-->
-
-    <p align='center'>
-        <h2><div id="link">{{ message|safe }}</div></h2>
-    </p>
-
     {% block content %} {% endblock %}
 
 </body>
