@@ -1,0 +1,49 @@
+/* SASS VARIABLES */
+/* SASS EXTENSIONS AND MIXINS */
+.absolute-center, .relative-center, input, #upload, .error-container { position: absolute; left: 0; right: 0; margin-left: auto; margin-right: auto; }
+
+.relative-center, input, #upload { position: relative; }
+
+/* MAN THESE TOOK FOREVER TO GET RIGHT IN SASS LOL */
+::-webkit-input-placeholder { color: #999; }
+
+input:-moz-placeholder { color: #999; }
+
+::-moz-placeholder { color: #999; }
+
+:-ms-input-placeholder { color: #999; }
+
+:focus::-webkit-input-placeholder { color: transparent; }
+
+input:focus:-moz-placeholder { color: transparent; }
+
+:focus::-moz-placeholder { color: transparent; }
+
+:focus:-ms-input-placeholder { color: transparent; }
+
+/* START OF CSS */
+html { height: 100%; min-height: 500px; background: #444; overflow-x: hidden; overflow-y: scroll; letter-spacing: 1px; }
+
+body { font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; font-size: 20px; min-height: 500px; height: calc(100% - 4em); margin: 0; background-attachment: scroll; background-size: 100% 100%; background-repeat: no-repeat; background-position: left top; }
+
+#wrapper { height: calc(80% - 6em); padding: 2em; width: auto; }
+
+/* DO NOT DISPLAY SCROLL BAR */
+::-webkit-scrollbar { display: none; }
+
+.error-container { margin-top: -1em; width: auto; text-align: center; }
+
+input { display: inline-block; outline: none; transition: background 0.25s ease-in-out; -moz-transition: background 0.25s ease-in-out; -webkit-transition: background 0.25s ease-in-out; background-color: transparent; color: #6fc; text-align: center; font-weight: lighter; font-size: 1em; letter-spacing: 1px; height: 1em; padding: 3px 3px; margin-bottom: 10px; border-radius: 0; border: 0; border-bottom: solid 1px #FFF; width: 5em; }
+input:hover { background-color: rgba(100, 100, 100, 0.2); }
+input:focus { background-color: rgba(100, 100, 100, 0.2); }
+
+.header { margin: 2em auto 1em auto; width: auto; }
+.header img { display: block; position: relative; margin-left: auto; margin-right: auto; height: 2.5em; width: auto; }
+
+#query { color: #FFF; font-weight: lighter; text-align: center; position: relative; display: block; margin-left: auto; margin-right: auto; }
+
+#upload { width: 350px; height: 250px; background-color: rgba(255, 255, 255, 0.2); border: dashed 2px #FFF; margin-top: 1em; }
+
+#hidden { display: none; }
+
+/*# sourceMappingURL=style_all.css.map */

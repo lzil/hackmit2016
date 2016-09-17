@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset=utf-8>
+    <title>Textura</title>
+    <!--external stylesheets and scripts-->
+    <link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/style_all.css') }}">
+    <script src="{{ url_for('static', filename='js/jquery-2.2.0.min.js') }}"></script>
+
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='img/favicon-16.png') }}" sizes="16x16">
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='img/favicon-32.png') }}" sizes="32x32">
+
+</head>
+
+<body>
+    <!--placeholder cuz I'm bad at CSS lol-->
+    <div class="header">
+        <a href="/"><img src="/static/img/logo.png">
+        </a>
+        <!--title block is an optional bit, like a header to each page-->
+        
+        <p>
+            <h1>{% block title %}{% endblock %}</h1>
+        </p>
+
+    </div>
+    {% block content %} {% endblock %}
+
+</body>
+
+</html>

@@ -1,0 +1,13 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<script type="text/javascript" src="{{ url_for('static', filename='js/main.js') }}"></script>
+<p align='center'>
+    
+<div id="wrapper">
+    <div id="query">How <input type="text" /> is my image?</div>
+    <div id="upload"></div>
+</div>
+
+{% endblock %}
