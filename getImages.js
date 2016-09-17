@@ -15,7 +15,11 @@ var sleep = require("sleep");
 
 var url = "https://www.googleapis.com/customsearch/v1";
 
-var apiKey = "AIzaSyDtdaThaXGyE-7O93cCoiJKyM4Hfh_fON0"; // Rachel's key
+var apiKey = "AIzaSyCe_hA3GopdanHqz9HHahkK3HKOefl7NEk"; // Grace's new gmail key
+
+//"AIzaSyCMchj-5QlA8EeJP0bakf8_1FJ1rAlIzHU"; // Tony's key
+
+//"AIzaSyDtdaThaXGyE-7O93cCoiJKyM4Hfh_fON0"; // Rachel's key
 
 //"AIzaSyBHMdlmmquC1RO2VY-52HPTp9vJjdZdyqY" // Grace's ios key
 //"AIzaSyCpdIYWYqgoX2kJCMheF3hcg99LE-jjs_I"; // Grace's geocoding key that works with the custom search api apparently.
@@ -32,20 +36,25 @@ var textures = [
 //  "zig zag",
 //  "plaid",
 //  "checkerboard"
+//  "pusheen"
 ];
-
+/*
 for (var i in textures) {
   tonyRecursion(0, textures[i]);
-  sleep.sleep(20);
+  sleep.sleep(30);
 }
+*/
 
+tonyRecursion(100, "stripe")
 
 function tonyRecursion(start, searchTerm) {
-  console.log(start);
 
-  if (start >= 500) {
+  if (start >= 120) {
     return;
   }
+
+  console.log(start);
+
   var params = {
     "key": apiKey,
     "q": searchTerm,
@@ -57,7 +66,10 @@ function tonyRecursion(start, searchTerm) {
   var file = "images/" + searchTerm + ".txt";
 
   request({"url": url, "qs": params}, function(err, res, body) {
-    if (err) throw err;
+    if (err) {
+      console.log(err);
+      throw err;
+    }
 
     var objBody = JSON.parse(body);
 
@@ -65,11 +77,11 @@ function tonyRecursion(start, searchTerm) {
       fs.appendFileSync(file, objBody.items[j].link + "\n");
       console.log(objBody.items[j].link);
     }
-  console.log();
+    console.log();
   });
 
-  sleep.sleep(1);
-  
+  sleep.sleep(2);
+
   return tonyRecursion(start + params.num, searchTerm);
 }
 
