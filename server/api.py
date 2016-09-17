@@ -56,17 +56,6 @@
 
 from flask import Flask, render_template, jsonify, \
     request, redirect, url_for, make_response, Blueprint
-from flask.ext.security import Security, login_required
-import flask.ext.security as flask_security
-from flask.ext.mongoengine import *
-
-from datetime import datetime, date, timedelta
-import uuid as uuid_module
-
-from permissions import *
-from database import Role, User, Catalist, CatalistEntry, CatalistKVP
-import database as dbase
-from views import get_id
 
 # **********************************************************
 # THE API!!!
