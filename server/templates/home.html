@@ -2,12 +2,19 @@
 
 {% block content %}
 
-<script type="text/javascript" src="{{ url_for('static', filename='js/main.js') }}"></script>
-<p align='center'>
-    
 <div id="wrapper">
-    <div id="query">How <input type="text" /> is my image?</div>
-    <div id="upload"></div>
+    <div id="query">How
+        <input type="text" /> is my image?</div>
+
+    <input type="file" onchange="previewFile()">
+    <br>
+    
+
+    <div id="box">
+        <img src="" id="preview" alt="preview">
+    </div>
+
 </div>
 
+<script type="text/javascript" src="{{ url_for('static', filename='js/main.js') }}"></script>
 {% endblock %}
