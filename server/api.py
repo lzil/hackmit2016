@@ -60,13 +60,10 @@ from flask.ext.security import Security, login_required
 import flask.ext.security as flask_security
 from flask.ext.mongoengine import *
 
+import db.dbconnector
+
 from datetime import datetime, date, timedelta
 import uuid as uuid_module
-
-from permissions import *
-from database import Role, User, Catalist, CatalistEntry, CatalistKVP
-import database as dbase
-from views import get_id
 
 # **********************************************************
 # THE API!!!
@@ -115,16 +112,18 @@ def query_similarity():
     sdfs
     """
     image_uuid = request.form["image-uuid"]
-    if image_uuid not in uuid_set:
-        raise InvalidAPIUsage("Invalid image ID", status_code=400)
-
     adjective = request.form["adjective"]
-    if not adjective.isalnum():
-        raise InvalidAPIUsage("Adjective must be alphanumeric", status_code=400)
-
+    
 
     if adjective not in cache:
-        train(adjective)
+        derpy_conv_net.train(adjective)
+
+        adjective = {
+            "type": "weight_vector",
+            "": "",
+        }
+        db.dbconnector.insert("cache_results_adjective_{}".format(adjective))
+
     similarity = derpy_conv_net.predict("tmp/{}".format(image_uuid))
     return jsonify(adjectiveness=similarity)
 
