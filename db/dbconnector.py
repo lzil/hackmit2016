@@ -49,14 +49,12 @@ def get(searchID):
     is returned.
     """
     try:
-        response = table.get_item(Key={primary_key : year})
+        response = table.get_item(Key={primary_key : searchID})
     except ClientError as e:
         print(e.response['Error']['Message'])
     else:
         item = response['Item']
         nice_item = json.dumps(item, indent=4, cls=DecimalEncoder)
-        print("GetItem succeeded:")
-        print(nice_item)
 
         return nice_item
 
