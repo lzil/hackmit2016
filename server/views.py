@@ -66,8 +66,8 @@ def upload():
         fullpath = os.path.join(UPLOAD_FOLDER, filename)
         fileImg.save(fullpath)
 
-    num = 0
-    return jsonify(score=num)
+    num = 0.5
+    return jsonify(score=num, searchID=searchID)
 
 @app.route("/", methods=['GET', 'POST'])
 def index():
