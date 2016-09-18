@@ -104,16 +104,18 @@ def query_similarity():
     sdfs
     """
     image_uuid = request.form["image-uuid"]
-    if image_uuid not in uuid_set:
-        raise InvalidAPIUsage("Invalid image ID", status_code=400)
-
     adjective = request.form["adjective"]
-    if not adjective.isalnum():
-        raise InvalidAPIUsage("Adjective must be alphanumeric", status_code=400)
-
+    
 
     if adjective not in cache:
-        train(adjective)
+        derpy_conv_net.train(adjective)
+
+        adjective = {
+            "type": "weight_vector",
+            "": "",
+        }
+        db.dbconnector.insert("cache_results_adjective_{}".format(adjective))
+
     similarity = derpy_conv_net.predict("tmp/{}".format(image_uuid))
     return jsonify(adjectiveness=similarity)
 

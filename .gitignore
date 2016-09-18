@@ -3,4 +3,6 @@
 **.sass-cache
 **.map
 *.pyc
+tmp/
 node_modules
+uploads
