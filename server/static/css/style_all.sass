@@ -107,6 +107,7 @@ body
     background-position: left top
     
 #wrapper
+    background: $color-gray-darkest
     position: absolute
     top: 50%
     min-height: 400px
@@ -225,12 +226,14 @@ input[type=text]
     margin-top: -1em
     margin-left: auto
     margin-right: auto
-    
+
+#box
+    width: calc(60% - 1em)
+#score
+    width: calc(35% - 1em)
 #box, #score
     float: left
     display: none
-    
-    width: calc(47% - 1em)
     
     height: 250px
     padding: 0.5em
@@ -245,6 +248,16 @@ input[type=text]
         top: 0
         opacity: 0
         width: 100%
+    .scoreDec
+        width: 10px
+        height: 10px
+        border: solid 1px $color-white
+        display: inline-block
+        margin: 3px 1px
+    .filled
+        background-color: $color-transparent-medium
+    .empty
+        background-color: $color-transparent
         
 .hidden
     display: none

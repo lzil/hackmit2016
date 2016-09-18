@@ -63,17 +63,34 @@ function sendRequest()
 // displays results nicely
 function displayResults(data)
 {
-    $("#upload-visible").hide();
+    $("#upload-text").html("Upload another image?");
     $("#descriptions").hide();
     
     // $("#box").css("display","inline-block");
     // $("#score").css("display","inline-block");
     
+    $("#wrapper").css("top","30%");
+    $(".header").css("top","10%");
+    
     $("#box").fadeIn();
     $("#score").fadeIn();
     
     var score = data.score;
-    $("#score").html("Very much Pusheen!! Score: " + score);
+    var searchID = data.searchID;
+    
+    var scoreInt = Math.round(score * 10);
+    
+    $("#score").html("");
+    for(var i = 0; i < scoreInt; i++)
+    {
+        $("#score").append("<div class='scoreDec filled'></div>");
+    }
+    for(var i = 0; i < 10 - scoreInt; i++)
+    {
+        $("#score").append("<div class='scoreDec empty'></div>");
+    }
+    
+    $("#score").append("<br>" + searchID + " Score: " + score);
 }
 
 function previewImg(img)

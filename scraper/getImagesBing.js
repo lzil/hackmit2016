@@ -28,6 +28,7 @@ var header = {
 
 var i = 0;
 
+console.log("hello");
 tonyRecursion(0, searchTerm);
 
 
@@ -37,11 +38,14 @@ function tonyRecursion(skip, searchTerm) {
   }
 
   var url = makeUrl(searchTerm, count, skip);
+  console.log(url);
 
   request({"url": url, "headers": header}, function(error, res, body) {
     if (error) throw error;
 
     body = JSON.parse(body);
+
+    console.log(res);
 
     var images = body.value;
 
@@ -49,7 +53,7 @@ function tonyRecursion(skip, searchTerm) {
 
     for (var pic in images) {
       console.log(images[pic].contentUrl);
-      fs.appendFileSync(file, images[pic].contentUrl + "\n");
+      //fs.appendFileSync(file, images[pic].contentUrl + "\n");
       j++;
     }
 
