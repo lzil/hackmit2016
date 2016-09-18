@@ -69,6 +69,9 @@ function displayResults(data)
     // $("#box").css("display","inline-block");
     // $("#score").css("display","inline-block");
     
+    $("#wrapper").css("top","30%");
+    $(".header").css("top","10%");
+    
     $("#box").fadeIn();
     $("#score").fadeIn();
     
