@@ -18,6 +18,8 @@ import cStringIO
 from PIL import Image
 import random
 
+import learning.models
+
 from datetime import datetime
 
 # **********************************************************
@@ -74,8 +76,6 @@ def upload():
     filename = request.form['filename']
     searchID = request.form['searchID']
 
-    num = get_score(filename, searchID)
-
     if fileObj and allowed_file(filename):
         fileDec = decodeB64(fileObj)
         fileImg = encodePIL(fileDec)
@@ -85,6 +85,8 @@ def upload():
 
         fullpath = os.path.join(UPLOAD_FOLDER, filename)
         fileImg.save(fullpath)
+
+    num = get_score(filename, searchID)
 
     return jsonify(score=num, searchID=searchID)
 

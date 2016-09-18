@@ -4,7 +4,7 @@ import texture_class
 
 def getScore(adjective, image):
 	base_path = '../../cache/models/'
-	if !os.path.isfile(base_path+adjective+'.pkl'):
+	if not os.path.isfile(base_path+adjective+'.pkl'):
 		# PULL A FOLDER OF IMAGES that have been downloaded. maybe we could make do with the URL.
 		# But they need to be turned into thumbnails too
 		res = texture_class.train_images(folder, adjective)

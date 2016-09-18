@@ -5,3 +5,5 @@
 *.pyc
 tmp/
 node_modules
+uploads
+*thumbnails*
