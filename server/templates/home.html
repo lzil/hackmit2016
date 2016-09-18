@@ -4,11 +4,16 @@
 
 <div id="wrapper">
     <div id="query">How
-        <input type="text" /> is my image?</div>
+        <input type="text" id="queryID" value="Pusheen" /> is my image?</div>
 
-    <div id="upload-visible">Upload<input type="file" onchange="previewFile()" id="upload"></div>    
+    <div id="upload-visible">Upload<input type="file" onchange="previewFile()" id="upload"></div> 
 
-    <div id="box">
+    <div class="descrip">xx</div>
+    <div class="descrip">xx</div>
+    <div class="descrip">xxx</div>
+    
+    <div id="box" class="hidden">
+        <canvas></canvas>
         <img src="" id="preview" alt="preview">
     </div>
 

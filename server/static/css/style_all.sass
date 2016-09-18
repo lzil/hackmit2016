@@ -80,7 +80,12 @@ $color-white: #FFF
 html
     height: 100%
     min-height: 500px
+    max-height: 100%
     background: $color-gray-darkest
+    background-image: url("../img/bg.png")
+    background-size: auto 50%
+    background-repeat: repeat-x
+    
     overflow-x: hidden
     overflow-y: scroll
     
@@ -93,6 +98,7 @@ body
     font-size: 20px
     min-height: 500px
     height: calc(100% - 4em)
+    min-width: 600px
     margin: 0
     
     background-attachment: scroll
@@ -101,9 +107,13 @@ body
     background-position: left top
     
 #wrapper
-    height: calc(80% - 6em)
+    position: absolute
+    top: 50%
+    min-height: 400px
+    width: calc(100% - 4em)
+    min-width: 600px
+    height: calc(70% - 6em)
     padding: 2em
-    width: auto
     
 /* DO NOT DISPLAY SCROLL BAR */
 ::-webkit-scrollbar
@@ -170,8 +180,13 @@ input[type=text]
         filter: alpha(opacity=0)
     
 .header
-    margin: 2em auto 1em auto
-    width: auto
+    margin: 0 auto 1em auto
+    width: 100%
+    background-color: $color-gray-transparent-dark
+    padding: 1em 0
+    position: absolute
+    top: 30%
+    
     img
         display: block
         position: relative
@@ -179,6 +194,14 @@ input[type=text]
         margin-right: auto
         height: 2.5em
         width: auto
+        
+.descrip
+    background-color: $color-transparent-medium
+    display: inline-block
+    padding: 1em
+    width: calc(32.5% - 2em)
+    height: 50%
+    position: relative
 
 #query
     color: $color-white
@@ -187,6 +210,7 @@ input[type=text]
     text-align: center
     position: relative
     display: block
+    margin-top: -1em
     margin-left: auto
     margin-right: auto
     
