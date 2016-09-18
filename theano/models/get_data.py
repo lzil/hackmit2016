@@ -4,19 +4,27 @@ import os
 import numpy
 import random
 
+import theano
 from PIL import Image
 
-#CACHE_DIR = "../../cache/links/"
+CACHE_DIR = "../../cache/"
+negative_dir = os.path.join(CACHE_DIR, "thumbnails", "_negative")
 
 
-def directory_to_dataset(dirname, permute=True):
+def append_labels(data, label):
+    return (data, numpy.ones(len(data)) * label)
+
+
+def directory_to_dataset(dirname):
     # check precondition
     assert(os.path.isdir(dirname))
 
-    files = os.listdir(dirname)
-    if permute:
-        random.shuffle(files)
-    all_data = [image_to_ndarray(os.path.join(dirname, path)).flatten() for path in files]
+    positive_files = [(os.path.join(dirname, basename), 1) for basename in os.listdir(dirname)]
+    negative_files = [(os.path.join(negative_dir, basename), 0) for basename in os.listdir(negative_dir)]
+    files = positive_files + negative_files
+    random.shuffle(files)
+
+    all_data = [(image_to_ndarray(path).flatten(), label) for (path, label) in files]
     num_data_points = len(all_data)
 
     train_frac = num_data_points * 70 // 100
@@ -27,10 +35,11 @@ def directory_to_dataset(dirname, permute=True):
     assert(non_test_frac < num_data_points)
 
     # train 70, validate 15, test 15
-    return (numpy.asarray(all_data[:train_frac]),
-            numpy.asarray(all_data[train_frac:non_test_frac]),
-            numpy.asarray(all_data[non_test_frac:]))
-
+    def transpose(labeled_data):
+        return tuple(map(lambda x: theano.shared(numpy.asarray(x)), zip(*labeled_data)))
+    return tuple(map(transpose,
+        [all_data[:train_frac], all_data[train_frac:non_test_frac], all_data[non_test_frac:]]
+        ))
 
 def image_to_ndarray(path):
     greyscale_image = Image.open(path).convert('L')

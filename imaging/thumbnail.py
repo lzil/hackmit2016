@@ -46,6 +46,11 @@ def download_and_thumbnail(file_object, size):
     for path in paths:
         make_square_thumbnail(path, size, "thumbnails")
 
+for filename in glob.glob("/Users/txz/Pictures/happiness/*.jpg"):
+    abspath = os.path.join("/Users/txz/Pictures/happiness", filename)
+    with open(filename, 'r') as f:
+        make_square_thumbnail(abspath, 128, "thumbnails")
+
 # with open("links/plaid.txt", 'r') as f:
 #     paths = [download_image(url) for url in f]
 #     for path in paths:

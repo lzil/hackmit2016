@@ -41,16 +41,39 @@ function sendRequest()
             formData.append("filename", fileInputVal.name);
             formData.append("searchID", searchID);
 
-            var http = new XMLHttpRequest();
-            http.open("POST", "/upload");
-            http.send(formData);
-
+            $.ajax({
+                data: formData,
+                url: "/upload",
+                method: 'POST',
+                contentType: false,
+                processData: false,
+                success: function(data, status, jqxhr) {
+                    displayResults(data);
+                }
+            });
+            
             // reset input
             $(fileInput)[0].files = null;
         }
         
         reader.readAsDataURL(fileInputVal);
     }
+}
+
+// displays results nicely
+function displayResults(data)
+{
+    $("#upload-visible").hide();
+    $("#descriptions").hide();
+    
+    // $("#box").css("display","inline-block");
+    // $("#score").css("display","inline-block");
+    
+    $("#box").fadeIn();
+    $("#score").fadeIn();
+    
+    var score = data.score;
+    $("#score").html("Very much Pusheen!! Score: " + score);
 }
 
 function previewImg(img)
@@ -85,7 +108,7 @@ function previewImg(img)
     canvas.height = height;
 
     var ctx = canvas.getContext("2d");
-    ctx.drawImage(img, 0, 0, width, height);
+    // ctx.drawImage(img, 0, 0, width, height);
 
     var dataurl = canvas.toDataURL();
     
