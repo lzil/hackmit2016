@@ -9,6 +9,8 @@ from __future__ import print_function
 import os
 import sys
 import timeit
+import time
+import six.moves.cPickle as pickle
 
 import numpy
 
@@ -21,10 +23,109 @@ from logistic_sgd import LogisticRegression, load_data
 from mlp import HiddenLayer
 from conv import LeNetConvPoolLayer
 
-def evaluate_image(learning_rate=0.1, n_epochs=50,
+class TexturaNet(object):
+	"""
+	Combination of a bunch of conv layers to produce a neural net!
+	"""
+
+	def __init__(self, rng, input, image_shape, batch_size,
+		filter_shape1, filter_shape2, filter_shape3,
+		poolsize=(2, 2), nkerns=[20, 50], hidden_dim=50):
+		"""
+		Allocate a LeNetConvPoolLayer with shared variable internal parameters.
+
+		:type rng: numpy.random.RandomState
+		:param rng: a random number generator used to initialize weights
+
+		:type input: theano.tensor.dtensor4
+		:param input: symbolic image tensor, of shape image_shape
+
+		:type filter_shape: tuple or list of length 4
+		:param filter_shape: (number of filters, num input feature maps,
+							  filter height, filter width)
+
+		:type image_shape: tuple or list of length 4
+		:param image_shape: (batch size, num input feature maps,
+							 image height, image width)
+
+		:type poolsize: tuple or list of length 2
+		:param poolsize: the downsampling (pooling) factor (#rows, #cols)
+		"""
+
+		# Construct the first convolutional pooling layer:
+		# filtering reduces the image size to (28-5+1 , 28-5+1) = (24, 24)
+		# maxpooling reduces this further to (24/2, 24/2) = (12, 12)
+		# 4D output tensor is thus of shape (batch_size, nkerns[0], 12, 12)
+
+		self.layer1_input = input
+		self.layer1 = LeNetConvPoolLayer(
+			rng,
+			input=self.layer1_input,
+			image_shape=(batch_size, 1, image_shape[0], image_shape[1]),
+			filter_shape=(nkerns[0], 1, filter_shape1[0], filter_shape1[1]),
+			poolsize=poolsize
+		)
+
+		# Construct the second convolutional pooling layer
+		# filtering reduces the image size to (12-5+1, 12-5+1) = (8, 8)
+		# maxpooling reduces this further to (8/2, 8/2) = (4, 4)
+		# 4D output tensor is thus of shape (batch_size, nkerns[1], 4, 4)
+
+		image_shape2 = (
+			(image_shape[0]-filter_shape1[0]+1)/poolsize[0],
+			(image_shape[1]-filter_shape1[1]+1)/poolsize[1]
+		)
+		filter_shape1 = 
+		self.layer2 = LeNetConvPoolLayer(
+			rng,
+			input=self.layer1.output,
+			image_shape=(batch_size, nkerns[0], image_shape2[0], image_shape2[1]),
+			filter_shape=(nkerns[1], nkerns[0], filter_shape2[0], filter_shape2[1]),
+			poolsize=poolsize
+		)
+
+
+		image_shape3 = (
+			(image_shape2[0]-filter_shape2[0]+1)/poolsize[0],
+			(image_shape2[1]-filter_shape2[1]+1)/poolsize[1]
+		)
+		self.layer3 = LeNetConvPoolLayer(
+			rng,
+			input=self.layer2.output,
+			image_shape=(batch_size, nkerns[0], image_shape3[0], image_shape3[1]),
+			filter_shape=(nkerns[1], nkerns[0], filter_shape3[0], filter_shape3[1]),
+			poolsize=poolsize
+		)
+
+		self.layer4_input = self.layer3.output.flatten(2)
+		image_shape4 = (
+			(image_shape3[0]-filter_shape3[0]+1)/poolsize[0],
+			(image_shape3[1]-filter_shape3[1]+1)/poolsize[1]
+		)
+		# construct a fully-connected sigmoidal layer
+		self.layer4 = HiddenLayer(
+			rng,
+			input=self.layer4_input,
+			n_in=nkerns[1] * image_shape4[0] * image_shape4[1],
+			n_out=hidden_dim,
+			activation=T.tanh
+		)
+
+		# classify the values of the fully-connected sigmoidal layer
+		self.layer5 = LogisticRegression(input=layer4.output, n_in=hidden_dim, n_out=1)
+
+		self.params = layer5.params + layer4.params + layer3.params + layer2.params + layer1.params
+
+		self.negative_log_likelihood = self.layer5.negative_log_likelihood
+
+		self.errors = self.layer5.errors
+
+
+
+def train_images(name='untitled',learning_rate=0.1, n_epochs=50,
 					dataset='mnist.pkl.gz',
 					nkerns=[10, 15], batch_size=20):
-	""" Demonstrates lenet on MNIST dataset
+	"""
 
 	:type learning_rate: float
 	:param learning_rate: learning rate used (factor for the stochastic
@@ -40,7 +141,7 @@ def evaluate_image(learning_rate=0.1, n_epochs=50,
 	:param nkerns: number of kernels on each layer
 	"""
 
-	rng = numpy.random.RandomState(23455)
+	rng = numpy.random.RandomState(1000)
 
 	datasets = load_data(dataset)
 
@@ -69,68 +170,21 @@ def evaluate_image(learning_rate=0.1, n_epochs=50,
 	######################
 	print('... building the model')
 
-	# Reshape matrix of rasterized images of shape (batch_size, 28 * 28)
-	# to a 4D tensor, compatible with our LeNetConvPoolLayer
-	# (28, 28) is the size of MNIST images.
-	layer0_input = x.reshape((batch_size, 1, 28, 28))
+	input = x.reshape((batch_size, 1, 128, 128))
 
-	# Construct the first convolutional pooling layer:
-	# filtering reduces the image size to (28-5+1 , 28-5+1) = (24, 24)
-	# maxpooling reduces this further to (24/2, 24/2) = (12, 12)
-	# 4D output tensor is thus of shape (batch_size, nkerns[0], 12, 12)
-	layer0 = LeNetConvPoolLayer(
-		rng,
-		input=layer0_input,
-		image_shape=(batch_size, 1, 128, 128),
-		filter_shape=(nkerns[0], 1, 9, 9),
-		poolsize=(2, 2)
-	)
-
-	# Construct the second convolutional pooling layer
-	# filtering reduces the image size to (12-5+1, 12-5+1) = (8, 8)
-	# maxpooling reduces this further to (8/2, 8/2) = (4, 4)
-	# 4D output tensor is thus of shape (batch_size, nkerns[1], 4, 4)
-	layer1 = LeNetConvPoolLayer(
-		rng,
-		input=layer0.output,
-		image_shape=(batch_size, nkerns[0], 60, 60),
-		filter_shape=(nkerns[1], nkerns[0], 5, 5),
-		poolsize=(2, 2)
-	)
-
-	layer1b = LeNetConvPoolLayer(
-		rng,
-		input=layer0.output,
-		image_shape=(batch_size, nkerns[0], 12, 12),
-		filter_shape=(nkerns[1], nkerns[0], 5, 5),
-		poolsize=(2, 2)
-	)
-
-	# the HiddenLayer being fully-connected, it operates on 2D matrices of
-	# shape (batch_size, num_pixels) (i.e matrix of rasterized images).
-	# This will generate a matrix of shape (batch_size, nkerns[1] * 4 * 4),
-	# or (500, 50 * 4 * 4) = (500, 800) with the default values.
-	layer2_input = layer1b.output.flatten(2)
-
-	# construct a fully-connected sigmoidal layer
-	layer2 = HiddenLayer(
-		rng,
-		input=layer2_input,
-		n_in=nkerns[1] * 12 * 12,
-		n_out=50,
-		activation=T.tanh
-	)
-
-	# classify the values of the fully-connected sigmoidal layer
-	layer3 = LogisticRegression(input=layer2.output, n_in=100, n_out=1)
+	model = TexturaNet(
+		rng,input,batch_size,image_shape1=(128, 128),
+		filter_shape1=(9,9),filter_shape2=(5,5),filter_shape2=(5,5),
+		poolsize=(2,2),nkerns=[10,15], hidden_dim=50
+	);
 
 	# the cost we minimize during training is the NLL of the model
-	cost = layer3.negative_log_likelihood(y)
+	cost = model.negative_log_likelihood(y)
 
 	# create a function to compute the mistakes that are made by the model
 	test_model = theano.function(
 		[index],
-		layer3.errors(y),
+		model.errors(y),
 		givens={
 			x: test_set_x[index * batch_size: (index + 1) * batch_size],
 			y: test_set_y[index * batch_size: (index + 1) * batch_size]
@@ -139,27 +193,18 @@ def evaluate_image(learning_rate=0.1, n_epochs=50,
 
 	validate_model = theano.function(
 		[index],
-		layer3.errors(y),
+		model.errors(y),
 		givens={
 			x: valid_set_x[index * batch_size: (index + 1) * batch_size],
 			y: valid_set_y[index * batch_size: (index + 1) * batch_size]
 		}
 	)
 
-	# create a list of all model parameters to be fit by gradient descent
-	params = layer3.params + layer2.params + layer1.params + layer0.params
+	grads = T.grad(cost, model.params)
 
-	# create a list of gradients for all model parameters
-	grads = T.grad(cost, params)
-
-	# train_model is a function that updates the model parameters by
-	# SGD Since this model has many parameters, it would be tedious to
-	# manually create an update rule for each model parameter. We thus
-	# create the updates list by automatically looping over all
-	# (params[i], grads[i]) pairs.
 	updates = [
 		(param_i, param_i - learning_rate * grad_i)
-		for param_i, grad_i in zip(params, grads)
+		for param_i, grad_i in zip(model.params, grads)
 	]
 
 	train_model = theano.function(
@@ -179,15 +224,9 @@ def evaluate_image(learning_rate=0.1, n_epochs=50,
 	print('... training')
 	# early-stopping parameters
 	patience = 300  # look as this many examples regardless
-	patience_increase = 2  # wait this much longer when a new best is
-						   # found
-	improvement_threshold = 0.95  # a relative improvement of this much is
-								   # considered significant
+	patience_increase = 2
+	improvement_threshold = 0.95
 	validation_frequency = min(n_train_batches, patience // 2)
-								  # go through this many
-								  # minibatche before checking the network
-								  # on the validation set; in this case we
-								  # check every epoch
 
 	best_validation_loss = numpy.inf
 	best_iter = 0
@@ -239,6 +278,9 @@ def evaluate_image(learning_rate=0.1, n_epochs=50,
 						  (epoch, minibatch_index + 1, n_train_batches,
 						   test_score * 100.))
 
+					with open('model_'+name+'.pkl', 'wb') as f:
+                        pickle.dump(model, f)
+
 			if patience <= iter:
 				done_looping = True
 				break
@@ -252,8 +294,38 @@ def evaluate_image(learning_rate=0.1, n_epochs=50,
 		   os.path.split(__file__)[1] +
 		   ' ran for %.2fm' % ((end_time - start_time) / 60.)), file=sys.stderr)
 
+
 if __name__ == '__main__':
-	evaluate_image()
+	#Usage: python texture_class.py [striped] [model image]
+	if len(sys.argv) > 2:
+		predict_image(sys.argv[2], argv[3])
+	elif len(sys.argv) == 2:
+		train_images(name=sys.argv[1])
+	else:
+		train_images()
+
+def predict_image(model, image):
+    """
+    Predicts score for the image.
+    """
+
+    # load the saved model
+    classifier = pickle.load(open(model))
+
+    # compile a predictor function
+    predict_model = theano.function(
+        inputs=[classifier.input],
+        outputs=classifier.y_pred)
+
+    # We can test it on some examples from test test
+    dataset='mnist.pkl.gz'
+    datasets = load_data(dataset)
+    test_set_x, test_set_y = datasets[2]
+    test_set_x = test_set_x.get_value()
+
+    predicted_values = predict_model(test_set_x[:10])
+    print("Predicted values for the first 10 examples in test set:")
+    print(predicted_values)
 
 
 def experiment(state, channel):
