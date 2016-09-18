@@ -1,6 +1,10 @@
 # call tonyRecursion(0, <<search term>>) 
 # to get a list of ~600 urls to train on.
 
+# search term should be one word (as in, no spaces).
+# I suspect strange things would happen if there's a space...
+
+from __future__ import print_function
 import requests
 
 # picked 600 because later results become more irrelevant. 
@@ -19,7 +23,6 @@ toReturn = []
 def tonyRecursion(skip, searchTerm):
   if skip >= count:
     return toReturn
-  
 
   # clear the toReturn array, just in case it has been used before 
   # and still contains the previous results.
