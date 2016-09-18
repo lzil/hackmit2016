@@ -80,9 +80,9 @@ def upload():
         fileImg = encodePIL(fileDec)
 
         timestamp = str(datetime.now().time().isoformat())
-        filename = timestamp + "-" + filename
+        filename_new = timestamp + "-" + filename
 
-        fullpath = os.path.join(UPLOAD_FOLDER, filename)
+        fullpath = os.path.join(UPLOAD_FOLDER, filename_new)
         fileImg.save(fullpath)
 
     num = get_score(filename, searchID)
