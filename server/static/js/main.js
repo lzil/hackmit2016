@@ -112,4 +112,9 @@ function previewFile()
     {
         // preview.src = "";
     }
+
+    $("#preview").css(
+    {
+        opacity: 1
+    });
 }

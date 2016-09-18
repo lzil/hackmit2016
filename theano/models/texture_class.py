@@ -12,6 +12,8 @@ import timeit
 
 import numpy
 
+import six.moves.cPickle as pickle
+
 import theano
 import theano.tensor as T
 from theano.tensor.signal import pool
@@ -21,9 +23,11 @@ from logistic_sgd import LogisticRegression, load_data
 from mlp import HiddenLayer
 from conv import LeNetConvPoolLayer
 
+
 def evaluate_image(learning_rate=0.1, n_epochs=50,
 					dataset='mnist.pkl.gz',
-					nkerns=[10, 15], batch_size=20):
+					nkerns=[10, 15], batch_size=20,
+					adjective):
 	""" Demonstrates lenet on MNIST dataset
 
 	:type learning_rate: float
@@ -72,7 +76,7 @@ def evaluate_image(learning_rate=0.1, n_epochs=50,
 	# Reshape matrix of rasterized images of shape (batch_size, 28 * 28)
 	# to a 4D tensor, compatible with our LeNetConvPoolLayer
 	# (28, 28) is the size of MNIST images.
-	layer0_input = x.reshape((batch_size, 1, 28, 28))
+	layer0_input = x.reshape((batch_size, 1, 128, 128))
 
 	# Construct the first convolutional pooling layer:
 	# filtering reduces the image size to (28-5+1 , 28-5+1) = (24, 24)
@@ -144,6 +148,11 @@ def evaluate_image(learning_rate=0.1, n_epochs=50,
 			x: valid_set_x[index * batch_size: (index + 1) * batch_size],
 			y: valid_set_y[index * batch_size: (index + 1) * batch_size]
 		}
+	)
+
+	predict_model = theano.function(
+		inputs=[x],
+		outputs=[layer3.p_y_given_x]
 	)
 
 	# create a list of all model parameters to be fit by gradient descent
@@ -251,6 +260,19 @@ def evaluate_image(learning_rate=0.1, n_epochs=50,
 	print(('The code for file ' +
 		   os.path.split(__file__)[1] +
 		   ' ran for %.2fm' % ((end_time - start_time) / 60.)), file=sys.stderr)
+	pickle.dump(predict_model, os.path.join("../tmp/models/", adjective + ".pkl"))
+	return predict_model
+
+
+
+def predict(adjective, image):
+	predict_model = pickle.load(os.path.join("../tmp/models/", adjective + ".pkl"))
+	img = numpy.asarray(PIL.Image.open(image))
+	return predict_model(img)
+
+
+
+
 
 if __name__ == '__main__':
 	evaluate_image()

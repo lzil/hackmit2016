@@ -63,7 +63,7 @@ function tonyRecursion(start, searchTerm) {
     "num": 10,
     "start": start
   };
-  var file = "images/" + searchTerm + ".txt";
+  var file = "../images/" + searchTerm + ".txt";
 
   request({"url": url, "qs": params}, function(err, res, body) {
     if (err) {

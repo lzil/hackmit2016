@@ -40,10 +40,13 @@ def make_square_thumbnail(filename, thumbnail_size, outdir):
     cropped_image.thumbnail((thumbnail_size, thumbnail_size))
     cropped_image.save(os.path.join(outdir, basebasename + "_thumbnail.jpg"), "JPEG")
 
-with open("links/plaid.txt", 'r') as f:
-    paths = [download_image(url) for url in f]
-    for path in paths:
-        make_square_thumbnail(path, 128, "thumbnails")
 
-# for imfile in glob.glob("/Users/txz/Pictures/happiness/*.jpg"):
-#     make_square_thumbnail(imfile, 128, "thumbnails")
+def download_and_thumbnail(file_object, size):
+    paths = [download_image(url) for url in file_object]
+    for path in paths:
+        make_square_thumbnail(path, size, "thumbnails")
+
+# with open("links/plaid.txt", 'r') as f:
+#     paths = [download_image(url) for url in f]
+#     for path in paths:
+#         make_square_thumbnail(path, 128, "thumbnails")
