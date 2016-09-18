@@ -16,7 +16,7 @@ var count = 600;
 
 var offset = 0;
 
-var file = "../images/" + searchTerm + ".txt";
+var file = "../cache/links" + searchTerm + ".txt";
 
 function makeUrl(searchTerm, count, offset) {
   return "https://api.cognitive.microsoft.com/bing/v5.0/images/search?q=" + searchTerm + "&count=" + count + "&offset=" + offset;
