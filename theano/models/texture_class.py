@@ -79,7 +79,6 @@ class TexturaNet(object):
             (image_shape[0]-filter_shape1[0]+1)/poolsize[0],
             (image_shape[1]-filter_shape1[1]+1)/poolsize[1]
         )
-        filter_shape1 = 
         self.layer2 = LeNetConvPoolLayer(
             rng,
             input=self.layer1.output,
@@ -126,8 +125,7 @@ class TexturaNet(object):
 
 
 
-def train_images(adj='untitled',learning_rate=0.1, n_epochs=50,
-                    dataset='mnist.pkl.gz',
+def train_images(adjective,dataset,learning_rate=0.1, n_epochs=50,
                     nkerns=[10, 15], batch_size=20):
     """
     :type learning_rate: float
@@ -146,7 +144,7 @@ def train_images(adj='untitled',learning_rate=0.1, n_epochs=50,
 
     rng = numpy.random.RandomState(1000)
 
-    datasets = load_data(dataset)
+    datasets = directory_to_dataset(dataset)
 
     train_set_x, train_set_y = datasets[0]
     valid_set_x, valid_set_y = datasets[1]
@@ -177,7 +175,7 @@ def train_images(adj='untitled',learning_rate=0.1, n_epochs=50,
 
     model = TexturaNet(
         rng,input,batch_size,image_shape1=(128, 128),
-        filter_shape1=(9,9),filter_shape2=(5,5),filter_shape2=(5,5),
+        filter_shape1=(9,9),filter_shape2=(5,5),filter_shape3=(5,5),
         poolsize=(2,2),nkerns=[10,15], hidden_dim=50
     );
 
@@ -299,13 +297,21 @@ def train_images(adj='untitled',learning_rate=0.1, n_epochs=50,
 
 
 if __name__ == '__main__':
-    #Usage: python texture_class.py [adjective] [model image]
-    if len(sys.argv) > 2:
+    """
+    Usage:
+        python texture_class.py train [images adjective]
+    OR
+        python texture_class.py predict [model image]
+    """
+    assert len(sys.argv) == 4
+    if sys.argv[1] == 'train':
+        if len(sys.argv) > 2:
+            train_images(dataset=sys.argv[2], adjective=sys.argv[3])
+        else:
+            train_images(dataset=sys.argv[1])
+    elif sys.argv[1] == 'predict':
         predict_image(sys.argv[2], argv[3])
-    elif len(sys.argv) == 2:
-        train_images(name=sys.argv[1])
-    else:
-        train_images()
+
 
 def predict_image(model, image):
     """
