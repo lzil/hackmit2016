@@ -6,7 +6,7 @@ primary_key = 'searchID'
 def create_table():
     """
     create_table() creates a new table.
-    """    
+    """
     # connection manager
     dynamodb = boto3.resource('dynamodb',
             region_name='us-east-1',
