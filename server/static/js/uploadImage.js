@@ -3,6 +3,8 @@
 // return: dataurl of the resized img
 function previewImg(img)
 {
+    var canvas = $("canvas");
+    
     // resize img so that longest size is at max, 512
     var MAX_WIDTH = 350;
     var MAX_HEIGHT = 350;

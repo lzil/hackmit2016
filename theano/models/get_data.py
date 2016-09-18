@@ -6,7 +6,7 @@ import random
 
 from PIL import Image
 
-CACHE_DIR = "../../cache/links/"
+#CACHE_DIR = "../../cache/links/"
 
 
 def directory_to_dataset(dirname, permute=True):

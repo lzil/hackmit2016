@@ -17,6 +17,8 @@ import base64
 import cStringIO
 from PIL import Image
 
+from datetime import datetime
+
 # **********************************************************
 # FILE UPLOADING
 # **********************************************************
@@ -52,10 +54,14 @@ def encodePIL(imgData):
 def upload():
     fileObj = request.form['file']
     filename = request.form['filename']
+    searchID = request.form['searchID']
 
     if fileObj and allowed_file(filename):
         fileDec = decodeB64(fileObj)
         fileImg = encodePIL(fileDec)
+
+        timestamp = str(datetime.now().time().isoformat())
+        filename = timestamp + "-" + filename
 
         fullpath = os.path.join(UPLOAD_FOLDER, filename)
         fileImg.save(fullpath)
