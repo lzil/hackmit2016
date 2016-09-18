@@ -16,6 +16,7 @@ from server import app, HOSTNAME
 import base64
 import cStringIO
 from PIL import Image
+import random
 
 from datetime import datetime
 
@@ -66,7 +67,7 @@ def upload():
         fullpath = os.path.join(UPLOAD_FOLDER, filename)
         fileImg.save(fullpath)
 
-    num = 0.5
+    num = random.random()
     return jsonify(score=num, searchID=searchID)
 
 @app.route("/", methods=['GET', 'POST'])
