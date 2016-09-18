@@ -7,7 +7,7 @@ import random
 import theano
 from PIL import Image
 
-CACHE_DIR = "../../cache/"
+CACHE_DIR = "../../../cache/"
 negative_dir = os.path.join(CACHE_DIR, "thumbnails", "_negative")
 
 
@@ -37,7 +37,7 @@ def directory_to_dataset(dirname):
     # train 70, validate 15, test 15
     def transpose(labeled_data):
         (data, labels) = zip(*labeled_data)
-        return (theano.shared(numpy.asarray(data,dtype='float32')),
+        return (theano.shared(numpy.asarray(data,dtype='float64')),
             theano.tensor.cast(theano.shared(numpy.asarray(labels)), 'int32'))
 
     return tuple(map(transpose,
