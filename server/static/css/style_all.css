@@ -22,11 +22,11 @@ input:focus:-moz-placeholder { color: transparent; }
 :focus:-ms-input-placeholder { color: transparent; }
 
 /* START OF CSS */
-html { height: 100%; min-height: 500px; background: #444; overflow-x: hidden; overflow-y: scroll; letter-spacing: 1px; color: #FFF; font-weight: lighter; }
+html { height: 100%; min-height: 500px; max-height: 100%; background: #444; background-image: url("../img/bg.png"); background-size: auto 50%; background-repeat: repeat-x; overflow-x: hidden; overflow-y: scroll; letter-spacing: 1px; color: #FFF; font-weight: lighter; }
 
-body { font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; font-size: 20px; min-height: 500px; height: calc(100% - 4em); margin: 0; background-attachment: scroll; background-size: 100% 100%; background-repeat: no-repeat; background-position: left top; }
+body { font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; font-size: 20px; min-height: 500px; height: calc(100% - 4em); min-width: 600px; margin: 0; background-attachment: scroll; background-size: 100% 100%; background-repeat: no-repeat; background-position: left top; }
 
-#wrapper { height: calc(80% - 6em); padding: 2em; width: auto; }
+#wrapper { position: absolute; top: 50%; min-height: 400px; width: calc(100% - 4em); min-width: 600px; height: calc(70% - 6em); padding: 2em; }
 
 /* DO NOT DISPLAY SCROLL BAR */
 ::-webkit-scrollbar { display: none; }
@@ -41,10 +41,12 @@ input[type=text]:focus { background-color: rgba(100, 100, 100, 0.2); }
 #upload-visible:hover { background-color: #0a9; }
 #upload-visible input { position: absolute; left: 0; top: 0; border: none; height: 1em; width: 100%; padding: 3px 3px; opacity: 0; filter: alpha(opacity=0); }
 
-.header { margin: 2em auto 1em auto; width: auto; }
+.header { margin: 0 auto 1em auto; width: 100%; background-color: rgba(0, 0, 0, 0.4); padding: 1em 0; position: absolute; top: 30%; }
 .header img { display: block; position: relative; margin-left: auto; margin-right: auto; height: 2.5em; width: auto; }
 
-#query { color: #FFF; font-weight: lighter; text-align: center; position: relative; display: block; margin-left: auto; margin-right: auto; }
+.descrip { background-color: rgba(255, 255, 255, 0.5); display: inline-block; padding: 1em; width: calc(32.5% - 2em); height: 50%; position: relative; }
+
+#query { color: #FFF; font-weight: lighter; text-align: center; position: relative; display: block; margin-top: -1em; margin-left: auto; margin-right: auto; }
 
 #box { width: 350px; height: 250px; background-color: rgba(255, 255, 255, 0.2); border: dashed 2px #FFF; margin-top: 1em; overflow: hidden; }
 #box #preview { opacity: 0; width: 100%; }
