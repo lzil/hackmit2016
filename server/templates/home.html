@@ -6,7 +6,9 @@
     <div id="query">How
         <input type="text" id="queryID" value="Pusheen" /> is your image?</div>
 
-    <div id="upload-visible">Upload to find out!<input type="file" onchange="previewFile()" id="upload"></div> 
+    <div id="upload-visible">
+        <div id="upload-text">Upload to find out!</div>
+    <input type="file" onchange="previewFile()" id="upload"></div> 
     
     <div id="descriptions">
     <div class="descrip">
@@ -30,8 +32,15 @@
         <canvas></canvas>
     </div>
     
-    <div id="score"></div>
-
+    <div id="score">
+        <div class="scoreDec filled"></div>
+        <div class="scoreDec empty"></div>
+        <div class="scoreDec empty"></div>
+        <div class="scoreDec empty"></div>
+        <div class="scoreDec empty"></div>
+        <div class="scoreDec empty"></div>
+    </div>
+    
 </div>
 
 <script type="text/javascript" src="{{ url_for('static', filename='js/main.js') }}"></script>
