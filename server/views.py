@@ -55,6 +55,7 @@ def get_score(filename, searchID):
     returns score of file
     """
     searchID = searchID.lower()
+    filename = filename.lower()
 
     print(filename[0:5])
     if filename[0:5] == "pushe" and searchID == "pusheen":
