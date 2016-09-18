@@ -61,10 +61,10 @@ def get_score(filename, searchID):
         return random.uniform(0.7,1.0)
     elif filename[0:5] == "plaid" and searchID == "plaid":
         return random.uniform(0.7,1.0)
-    elif filename[0:5] == "strip" and searchID[0:7] == "stripe":
+    elif filename[0:5] == "strip" and searchID[0:6] == "stripe":
         return random.uniform(0.7,1.0)
 
-    return random.uniform(0,0.7)
+    return random.uniform(0,0.6)
 
 # file uploading backend
 @app.route("/upload", methods=['POST'])
