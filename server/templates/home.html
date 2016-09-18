@@ -4,13 +4,24 @@
 
 <div id="wrapper">
     <div id="query">How
-        <input type="text" id="queryID" value="Pusheen" /> is my image?</div>
+        <input type="text" id="queryID" value="Pusheen" /> is your image?</div>
 
-    <div id="upload-visible">Upload<input type="file" onchange="previewFile()" id="upload"></div> 
+    <div id="upload-visible">Upload to find out!<input type="file" onchange="previewFile()" id="upload"></div> 
 
-    <div class="descrip">xx</div>
-    <div class="descrip">xx</div>
-    <div class="descrip">xxx</div>
+    <div class="descrip">
+        <i class="fa fa-image" aria-hidden="true"></i>
+        Upload an image and provide an adjective for comparison.
+    </div>
+    
+    <div class="descrip">
+        <i class="fa fa-cloud" aria-hidden="true"></i>
+        Neural networks learn the adjective and analyze your image.
+    </div>
+        
+    <div class="descrip">
+        <i class="fa fa-bar-chart" aria-hidden="true"></i>
+        You receive a similarity score and help improve our service!
+    </div>
     
     <div id="box" class="hidden">
         <canvas></canvas>
