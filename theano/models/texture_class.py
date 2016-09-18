@@ -293,6 +293,7 @@ def train_images(adjective,dataset,nkerns=(10,15,8),learning_rate=0.1, n_epochs=
     print(('The code for file ' +
            os.path.split(__file__)[1] +
            ' ran for %.2fm' % ((end_time - start_time) / 60.)), file=sys.stderr)
+    return True
 
 
 if __name__ == '__main__':
@@ -318,7 +319,7 @@ def predict_image(model, image):
     """
 
     model = pickle.load(open(model))
-    img = numpy.asarray(Image.open(path).convert('L')).reshape((batch_size, 1, 128, 128))
+    img = numpy.asarray(Image.open(image).convert('L')).reshape((batch_size, 1, 128, 128))
 
     # compile a predictor function
     predict_model = theano.function(
@@ -327,3 +328,4 @@ def predict_image(model, image):
 
     predicted_value = predict_model(img)
     print("Your image score is: " + str(predicted_value))
+    return predicted_value
