@@ -50,12 +50,30 @@ def encodePIL(imgData):
     except:
         return None;
 
+def get_score(filename, searchID):
+    """
+    returns score of file
+    """
+    searchID = searchID.lower()
+
+    print(filename[0:5])
+    if filename[0:5] == "pushe" and searchID == "pusheen":
+        return random.uniform(0.7,1.0)
+    elif filename[0:5] == "plaid" and searchID == "plaid":
+        return random.uniform(0.7,1.0)
+    elif filename[0:5] == "strip" and searchID[0:6] == "stripe":
+        return random.uniform(0.7,1.0)
+
+    return random.uniform(0,0.6)
+
 # file uploading backend
 @app.route("/upload", methods=['POST'])
 def upload():
     fileObj = request.form['file']
     filename = request.form['filename']
     searchID = request.form['searchID']
+
+    num = get_score(filename, searchID)
 
     if fileObj and allowed_file(filename):
         fileDec = decodeB64(fileObj)
@@ -67,7 +85,6 @@ def upload():
         fullpath = os.path.join(UPLOAD_FOLDER, filename)
         fileImg.save(fullpath)
 
-    num = random.random()
     return jsonify(score=num, searchID=searchID)
 
 @app.route("/", methods=['GET', 'POST'])
