@@ -15,8 +15,8 @@ headers = {
 }
 
 def makeUrl(searchTerm, count, offset): 
-  baseurl = "https://api.cognitive.microsoft.com/bing/v5.0/images/search?q={}&count={}&offset={}"
-  return baseurl.format(searchTerm, count, offset)
+  baseurl = "https://api.cognitive.microsoft.com/bing/v5.0/images/search?count={}&offset={}&q={}"
+  return baseurl.format(count, offset, searchTerm)
 
 toReturn = []
 
@@ -30,16 +30,18 @@ def tonyRecursion(skip, searchTerm):
     toReturn = []
   
 
-  url = makeUrl(searchTerm, count, skip);
+  url = makeUrl(searchTerm, count, skip)
 
-  payload = {
-    "q": searchTerm,
-    "count": count,
-    "offset": skip
-  }
+  print(url)
 
-  r = requests.get(url, params=payload, headers=headers)
+  print()
+
+  r = requests.get(url, headers=headers)
   r = r.json()
+
+  print(r)
+
+  print()
 
   i = 0
 
