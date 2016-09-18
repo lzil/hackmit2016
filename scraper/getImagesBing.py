@@ -4,7 +4,7 @@
 # search term should be one word (as in, no spaces).
 # I suspect strange things would happen if there's a space...
 
-#from __future__ import print_function 
+from __future__ import print_function
 import requests
 
 # picked 600 because later results become more irrelevant. 
@@ -15,15 +15,8 @@ headers = {
 }
 
 def makeUrl(searchTerm, count, offset): 
-  return "https://api.cognitive.microsoft.com/bing/v5.0/images/search?q=" + searchTerm + "&count=" + str(count) + "&offset=" + str(offset)
-  """
-  if offset == 0:
-    baseurl = "https://api.cognitive.microsoft.com/bing/v5.0/images/search?q={}&count={}"
-    return baseurl.format(searchTerm, count)
-
   baseurl = "https://api.cognitive.microsoft.com/bing/v5.0/images/search?q={}&count={}&offset={}"
   return baseurl.format(searchTerm, count, offset)
-  """
 
 toReturn = []
 
@@ -38,7 +31,6 @@ def tonyRecursion(skip, searchTerm):
   
 
   url = makeUrl(searchTerm, count, skip);
-  print(url)
 
   payload = {
     "q": searchTerm,
@@ -49,17 +41,10 @@ def tonyRecursion(skip, searchTerm):
   r = requests.get(url, params=payload, headers=headers)
   r = r.json()
 
-  print(r)
-
-  for thing in r: 
-    print(thing)
-
-  #file = "../cache/links" + searchTerm + ".txt"
   i = 0
 
   for image in r["value"]:
     toReturn.append(image["contentUrl"])
-    #print(image["contentUrl"], file)
     i += 1
 
   return tonyRecursion(skip + i, searchTerm)
