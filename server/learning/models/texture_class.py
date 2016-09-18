@@ -32,7 +32,7 @@ class TexturaNet(object):
     Combination of a bunch of conv layers to produce a neural net!
     """
 
-    def __init__(self, rng, input, batch_size,image_shape,
+    def __init__(self, rng, input, image_shape,
         filter_shape1, filter_shape2, filter_shape3,
         poolsize=(2, 2), nkerns=(10, 15, 8), hidden_dim=50):
         """
@@ -62,6 +62,7 @@ class TexturaNet(object):
         # 4D output tensor is thus of shape (batch_size, nkerns[0], 12, 12)
 
         self.layer1_input = input
+        batch_size = input.shape[0]
         self.layer1 = LeNetConvPoolLayer(
             rng,
             input=self.layer1_input,
@@ -118,14 +119,11 @@ class TexturaNet(object):
 
         self.params = self.layer5.params + self.layer4.params + self.layer3.params + self.layer2.params + self.layer1.params
 
-        self.negative_log_likelihood = self.layer5.negative_log_likelihood
-
-        self.errors = self.layer5.errors
 
 
 
 def train_images(adjective,dataset,nkerns=(10,15,8),learning_rate=0.1, n_epochs=50,
-                    batch_size=20):
+                    batch_size=1):
     """
     :type learning_rate: float
     :param learning_rate: learning rate used (factor for the stochastic
@@ -151,11 +149,13 @@ def train_images(adjective,dataset,nkerns=(10,15,8),learning_rate=0.1, n_epochs=
 
     # compute number of minibatches for training, validation and testing
     n_train_batches = train_set_x.get_value(borrow=True).shape[0]
+    
     n_valid_batches = valid_set_x.get_value(borrow=True).shape[0]
     n_test_batches = test_set_x.get_value(borrow=True).shape[0]
     n_train_batches //= batch_size
     n_valid_batches //= batch_size
     n_test_batches //= batch_size
+    print(n_valid_batches)
 
     # allocate symbolic variables for the data
     index = T.lscalar()  # index to a [mini]batch
@@ -173,18 +173,18 @@ def train_images(adjective,dataset,nkerns=(10,15,8),learning_rate=0.1, n_epochs=
     input = x.reshape((batch_size, 1, 128, 128))
 
     model = TexturaNet(
-        rng,input,batch_size,image_shape=(128, 128),
+        rng,input,image_shape=(128, 128),
         filter_shape1=(9,9),filter_shape2=(5,5),filter_shape3=(5,5),
         poolsize=(2,2),nkerns=(10,15,8), hidden_dim=50
     );
 
     # the cost we minimize during training is the NLL of the model
-    cost = model.negative_log_likelihood(y)
+    cost = model.layer5.negative_log_likelihood(y)
 
     # create a function to compute the mistakes that are made by the model
     test_model = theano.function(
         [index],
-        model.errors(y),
+        model.layer5.errors(y),
         givens={
             x: test_set_x[index * batch_size: (index + 1) * batch_size],
             y: test_set_y[index * batch_size: (index + 1) * batch_size]
@@ -193,7 +193,7 @@ def train_images(adjective,dataset,nkerns=(10,15,8),learning_rate=0.1, n_epochs=
 
     validate_model = theano.function(
         [index],
-        model.errors(y),
+        model.layer5.errors(y),
         givens={
             x: valid_set_x[index * batch_size: (index + 1) * batch_size],
             y: valid_set_y[index * batch_size: (index + 1) * batch_size]
@@ -278,7 +278,8 @@ def train_images(adjective,dataset,nkerns=(10,15,8),learning_rate=0.1, n_epochs=
                           (epoch, minibatch_index + 1, n_train_batches,
                            test_score * 100.))
 
-                    with open(adj+'.pkl', 'wb') as f:
+                    print(model.__dict__)
+                    with open('../../cache/models/'+adjective+'.pkl', 'wb') as f:
                         pickle.dump(model, f)
 
             if patience <= iter:
@@ -296,6 +297,26 @@ def train_images(adjective,dataset,nkerns=(10,15,8),learning_rate=0.1, n_epochs=
     return True
 
 
+
+def predict_image(model, image):
+    """
+    Predicts score for the image.
+    """
+    batch_size = 1
+
+    model = pickle.load(open(model))
+    img = numpy.asarray(Image.open(image).convert('L')).reshape((batch_size, 1, 128, 128))
+
+    # compile a predictor function
+    predict_model = theano.function(
+        inputs=[model.layer1_input],
+        outputs=model.layer5.y_pred)
+
+    predicted_value = predict_model(img)
+    print("Your image score is: " + str(predicted_value))
+    return predicted_value
+
+
 if __name__ == '__main__':
     """
     Usage:
@@ -310,22 +331,5 @@ if __name__ == '__main__':
         else:
             train_images(dataset=sys.argv[1])
     elif sys.argv[1] == 'predict':
-        predict_image(sys.argv[2], argv[3])
+        predict_image(sys.argv[2], sys.argv[3])
 
-
-def predict_image(model, image):
-    """
-    Predicts score for the image.
-    """
-
-    model = pickle.load(open(model))
-    img = numpy.asarray(Image.open(image).convert('L')).reshape((batch_size, 1, 128, 128))
-
-    # compile a predictor function
-    predict_model = theano.function(
-        inputs=[model.input],
-        outputs=model.y_pred)
-
-    predicted_value = predict_model(img)
-    print("Your image score is: " + str(predicted_value))
-    return predicted_value
