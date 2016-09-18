@@ -32,9 +32,9 @@ class TexturaNet(object):
     Combination of a bunch of conv layers to produce a neural net!
     """
 
-    def __init__(self, rng, input, image_shape, batch_size,
+    def __init__(self, rng, input, batch_size,image_shape,
         filter_shape1, filter_shape2, filter_shape3,
-        poolsize=(2, 2), nkerns=[20, 50], hidden_dim=50):
+        poolsize=(2, 2), nkerns=(10, 15, 8), hidden_dim=50):
         """
         Allocate a LeNetConvPoolLayer with shared variable internal parameters.
 
@@ -87,7 +87,6 @@ class TexturaNet(object):
             poolsize=poolsize
         )
 
-
         image_shape3 = (
             (image_shape2[0]-filter_shape2[0]+1)/poolsize[0],
             (image_shape2[1]-filter_shape2[1]+1)/poolsize[1]
@@ -95,8 +94,8 @@ class TexturaNet(object):
         self.layer3 = LeNetConvPoolLayer(
             rng,
             input=self.layer2.output,
-            image_shape=(batch_size, nkerns[0], image_shape3[0], image_shape3[1]),
-            filter_shape=(nkerns[1], nkerns[0], filter_shape3[0], filter_shape3[1]),
+            image_shape=(batch_size, nkerns[1], image_shape3[0], image_shape3[1]),
+            filter_shape=(nkerns[2], nkerns[1], filter_shape3[0], filter_shape3[1]),
             poolsize=poolsize
         )
 
@@ -109,15 +108,15 @@ class TexturaNet(object):
         self.layer4 = HiddenLayer(
             rng,
             input=self.layer4_input,
-            n_in=nkerns[1] * image_shape4[0] * image_shape4[1],
+            n_in=nkerns[2] * image_shape4[0] * image_shape4[1],
             n_out=hidden_dim,
             activation=T.tanh
         )
 
         # classify the values of the fully-connected sigmoidal layer
-        self.layer5 = LogisticRegression(input=layer4.output, n_in=hidden_dim, n_out=1)
+        self.layer5 = LogisticRegression(input=self.layer4.output, n_in=hidden_dim, n_out=2)
 
-        self.params = layer5.params + layer4.params + layer3.params + layer2.params + layer1.params
+        self.params = self.layer5.params + self.layer4.params + self.layer3.params + self.layer2.params + self.layer1.params
 
         self.negative_log_likelihood = self.layer5.negative_log_likelihood
 
@@ -125,8 +124,8 @@ class TexturaNet(object):
 
 
 
-def train_images(adjective,dataset,learning_rate=0.1, n_epochs=50,
-                    nkerns=[10, 15], batch_size=20):
+def train_images(adjective,dataset,nkerns=(10,15,8),learning_rate=0.1, n_epochs=50,
+                    batch_size=20):
     """
     :type learning_rate: float
     :param learning_rate: learning rate used (factor for the stochastic
@@ -174,9 +173,9 @@ def train_images(adjective,dataset,learning_rate=0.1, n_epochs=50,
     input = x.reshape((batch_size, 1, 128, 128))
 
     model = TexturaNet(
-        rng,input,batch_size,image_shape1=(128, 128),
+        rng,input,batch_size,image_shape=(128, 128),
         filter_shape1=(9,9),filter_shape2=(5,5),filter_shape3=(5,5),
-        poolsize=(2,2),nkerns=[10,15], hidden_dim=50
+        poolsize=(2,2),nkerns=(10,15,8), hidden_dim=50
     );
 
     # the cost we minimize during training is the NLL of the model

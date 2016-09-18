@@ -36,7 +36,10 @@ def directory_to_dataset(dirname):
 
     # train 70, validate 15, test 15
     def transpose(labeled_data):
-        return tuple(map(lambda x: theano.shared(numpy.asarray(x)), zip(*labeled_data)))
+        (data, labels) = zip(*labeled_data)
+        return (theano.shared(numpy.asarray(data,dtype='float32')),
+            theano.tensor.cast(theano.shared(numpy.asarray(labels)), 'int32'))
+
     return tuple(map(transpose,
         [all_data[:train_frac], all_data[train_frac:non_test_frac], all_data[non_test_frac:]]
         ))
