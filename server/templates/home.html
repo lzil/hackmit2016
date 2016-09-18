@@ -7,7 +7,8 @@
         <input type="text" id="queryID" value="Pusheen" /> is your image?</div>
 
     <div id="upload-visible">Upload to find out!<input type="file" onchange="previewFile()" id="upload"></div> 
-
+    
+    <div id="descriptions">
     <div class="descrip">
         <i class="fa fa-image" aria-hidden="true"></i>
         Upload an image and provide an adjective for comparison.
@@ -22,11 +23,14 @@
         <i class="fa fa-bar-chart" aria-hidden="true"></i>
         You receive a similarity score and help improve our service!
     </div>
-    
-    <div id="box" class="hidden">
-        <canvas></canvas>
-        <img src="" id="preview" alt="preview">
     </div>
+    
+    <div id="box">
+        <img src="" id="preview" alt="preview">
+        <canvas></canvas>
+    </div>
+    
+    <div id="score"></div>
 
 </div>
 
