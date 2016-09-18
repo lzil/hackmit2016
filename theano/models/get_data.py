@@ -1,4 +1,4 @@
-from __future__ import division
+from __future__ import division, print_function
 
 import os
 import numpy
@@ -14,15 +14,15 @@ def directory_to_dataset(dirname, permute=True):
     files = os.listdir(dirname)
     if permute:
         random.shuffle(files)
-    all_data = [image_to_ndarray(path) for path in files]
+    all_data = [image_to_ndarray(os.path.join(dirname, path)) for path in files]
     num_data_points = len(all_data)
 
-    seventy_percent = num_data_points * 7 // 10
+    seventy_percent = num_data_points * 70 // 100
     eightyfive_percent = num_data_points * 85 // 100
 
-    return (num_data_points[:seventy_percent],
-            num_data_points[seventy_percent:eightyfive_percent]
-            num_data_points[eightyfive_percent:])
+    return (all_data[:seventy_percent],
+            all_data[seventy_percent:eightyfive_percent],
+            all_data[eightyfive_percent:])
 
 
 def image_to_ndarray(path):
