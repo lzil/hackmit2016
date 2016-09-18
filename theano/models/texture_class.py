@@ -26,7 +26,8 @@ from conv import LeNetConvPoolLayer
 
 def evaluate_image(learning_rate=0.1, n_epochs=50,
 					dataset='mnist.pkl.gz',
-					nkerns=[10, 15], batch_size=20):
+					nkerns=[10, 15], batch_size=20,
+					adjective):
 	""" Demonstrates lenet on MNIST dataset
 
 	:type learning_rate: float
@@ -259,15 +260,15 @@ def evaluate_image(learning_rate=0.1, n_epochs=50,
 	print(('The code for file ' +
 		   os.path.split(__file__)[1] +
 		   ' ran for %.2fm' % ((end_time - start_time) / 60.)), file=sys.stderr)
+	pickle.dump(predict_model, os.path.join("../tmp/models/", adjective + ".pkl"))
 	return predict_model
 
 
 
-def predict(adjective):
-	classifier = pickle.load(os.path.join("../tmp/models/", adjective + ".pkl"))
-	predict_model = theano.function(
-		inputs=classifier.input,
-		outputs=classifier.y_pred)
+def predict(adjective, image):
+	predict_model = pickle.load(os.path.join("../tmp/models/", adjective + ".pkl"))
+	img = numpy.asarray(PIL.Image.open(image))
+	return predict_model(img)
 
 
 
