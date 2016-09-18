@@ -1,3 +1,5 @@
+#basically a copy of thumbnail.py
+
 from __future__ import division
 
 from six.moves import urllib
@@ -8,13 +10,13 @@ import uuid
 from PIL import Image
 
 
-temp_dir = "tmp/downloaded"
+temp_dir = "tmp/downloaded-pusheen"
 def mkdir_if_not_exist(dirname):
     if not os.path.isdir(dirname):
         os.makedirs(dirname)
 
 mkdir_if_not_exist(temp_dir)
-mkdir_if_not_exist("thumbnails")
+mkdir_if_not_exist("thumbnails-pusheen")
 
 
 def download_image(url):
@@ -44,7 +46,10 @@ def make_square_thumbnail(filename, thumbnail_size, outdir):
     cropped_image = im.crop(
         (left, top, left + im_min_dimension, top + im_min_dimension))
     cropped_image.thumbnail((thumbnail_size, thumbnail_size))
-    cropped_image.save(os.path.join(outdir, basebasename + "_thumbnail.jpg"), "JPEG")
+    try:
+        cropped_image.save(os.path.join(outdir, basebasename + "_thumbnail.jpg"), "JPEG")
+    except IOError:
+        cropped_image.convert('RGB').save(os.path.join(outdir, basebasename + "_thumbnail.jpg"))
 
 
 def download_and_thumbnail(file_object, size):
@@ -57,13 +62,13 @@ def download_and_thumbnail(file_object, size):
 #     with open(filename, 'r') as f:
 #         make_square_thumbnail(abspath, 128, "thumbnails")
 
-with open("../cache/links/plaid-big.txt", 'r') as f:
+with open("../cache/links/pusheen-big.txt", 'r') as f:
     paths = [download_image(url) for url in f]
     i = 0
     for path in paths:
         print(i)
-        print("making thumnail " + path)
+        print("making thumbnail " + path)
         if path == None:
             continue
-        make_square_thumbnail(path, 128, "thumbnails-plaid")
+        make_square_thumbnail(path, 128, "thumbnails-pusheen")
         i += 1
