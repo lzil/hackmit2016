@@ -3,11 +3,11 @@ var fs = require("fs");
 
 var apiKey = "875fa8053fd2491d93dd442850e44a38";
 
-var count = 500;
+var count = 600;
 
 var texture = "checkerboard pattern";
 
-var offset = 596;
+var offset = 0;
 
 // do we want to add safeSearch? or are we confident that nothing too.. questionable will be returned?
 
@@ -22,7 +22,7 @@ request({"url": url, "headers": header}, function(error, res, body) {
 
   body = JSON.parse(body);
 
-  var file = "images/checkerboard.txt";
+  var file = "../images/checkerboard.txt";
 
   var images = body.value;
 
