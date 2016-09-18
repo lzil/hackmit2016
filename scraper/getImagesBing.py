@@ -1,4 +1,4 @@
-# call tonyRecursion(0, <<search term>>) 
+# *** call tonyRecursion(0, <<search term>>) ***
 # to get a list of ~600 urls to train on.
 
 # search term should be one word (as in, no spaces).
@@ -20,37 +20,39 @@ def makeUrl(searchTerm, count, offset):
 
 toReturn = []
 
+f = None
+
 def tonyRecursion(skip, searchTerm):
+  global toReturn
+  global f
+
   if skip >= count:
+    f.close()
     return toReturn
 
   # clear the toReturn array, just in case it has been used before 
   # and still contains the previous results.
   if skip == 0:
     toReturn = []
-  
 
+  file = "../cache/links/" + searchTerm + ".txt"
   url = makeUrl(searchTerm, count, skip)
-
-  print(url)
-
-  print()
 
   r = requests.get(url, headers=headers)
   r = r.json()
 
-  print(r)
-
-  print()
-
   i = 0
+
+  if f == None:
+    f = open(file,'w')
 
   for image in r["value"]:
     toReturn.append(image["contentUrl"])
+    print(image["contentUrl"], file=f)
     i += 1
 
   return tonyRecursion(skip + i, searchTerm)
 
-
-print(tonyRecursion(0, "green"))
+# for testing purposes
+# print(tonyRecursion(0, "green"))
 
